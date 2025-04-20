@@ -1,0 +1,28 @@
+header {
+  padding: 24px;
+}
+header h1 {
+  text-align: center;
+}
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+  padding: 2rem;
+}
+
+header,
+footer {
+  background-color: #222;
+  color: white;
+  padding: 1rem 2rem;
+}
+
+footer {
+  text-align: center;
+  font-size: 0.9rem;
+}

@@ -3,7 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles/reset.css" />
+    <link rel="stylesheet" href="../styles/layout.css" />
+    <link rel="stylesheet" href="../styles/heading.css" />
+    <link rel="stylesheet" href="../styles/home.css" />
+    <script src="../scripts/quizData.js" defer></script>
+    <script src="../scripts/quiz.js" defer></script>
     <title>Home</title>
   </head>
-  <body></body>
+  <div class="page-wrapper">
+    <body>
+      <header>
+        <nav>navbar</nav>
+      </header>
+      <main>
+        <h1 class="home-page-header">Welcome, <span id="user-name"></span></h1>
+        <section>
+          <div class="questions-container" id="questions-container"></div>
+        </section>
+      </main>
+    </body>
+    <footer>
+      <p>footer</p>
+    </footer>
+  </div>
 </html>

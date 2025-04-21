@@ -17,46 +17,45 @@
       </header>
       <main>
         <section class="auth-container">
-          <nav class="tab-buttons">
-            <button id="tab-login" class="active">Login</button>
-            <button id="tab-register">Register</button>
-          </nav>
+          <div class="form-wrapper">
+            <div class="tab-buttons">
+              <button id="tab-login" class="active">Login</button>
+              <button id="tab-register">Register</button>
+            </div>
 
-          <article id="login-form" class="auth-form active">
-            <form id="login">
-              <label for="login-email">Email:</label>
-              <input type="email" id="login-email" required />
+            <div id="login-form" class="auth-form active">
+              <form id="login">
+                <label for="login-email">Email:</label>
+                <input type="email" id="login-email" required />
 
-              <label for="login-password">Password:</label>
-              <input type="password" id="login-password" required />
+                <label for="login-password">Password:</label>
+                <input type="password" id="login-password" required />
+                <div id="error-message" class="error-message"></div>
+                <button type="submit">Login</button>
+              </form>
+            </div>
 
-              <button type="submit">Login</button>
-            </form>
-          </article>
+            <div id="register-form" class="auth-form">
+              <form id="register">
+                <label for="register-name">First name:</label>
+                <input type="name" id="register-name" required />
 
-          <article id="register-form" class="auth-form">
-            <form id="register">
-              <label for="register-name">First name:</label>
-              <input type="name" id="register-name" required />
+                <label for="register-last-name">Last name:</label>
+                <input type="last-name" id="register-last-name" required />
 
-              <label for="register-last-name">Last name:</label>
-              <input type="last-name" id="register-last-name" required />
+                <label for="register-email">Email:</label>
+                <input type="email" id="register-email" required />
 
-              <label for="register-email">Email:</label>
-              <input type="email" id="register-email" required />
-
-              <label for="register-password">Password:</label>
-              <input type="password" id="register-password" required />
-
-              <button type="submit">Register</button>
-            </form>
-          </article>
+                <label for="register-password">Password:</label>
+                <input type="password" id="register-password" required />
+                <div id="error-message-reg" class="error-message"></div>
+                <button type="submit">Register</button>
+              </form>
+            </div>
+            <div id="popup" class="popup hidden">Registered successfully!</div>
+          </div>
         </section>
       </main>
-
-      <footer>
-        <p>footer</p>
-      </footer>
     </div>
   </body>
 </html>

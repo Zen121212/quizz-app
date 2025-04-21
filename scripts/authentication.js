@@ -2,7 +2,9 @@ const tabLogin = document.getElementById("tab-login");
 const tabRegister = document.getElementById("tab-register");
 const loginForm = document.getElementById("login-form");
 const registerForm = document.getElementById("register-form");
-
+const errorMessageLog = document.getElementById("error-message");
+const errorMessageReg = document.getElementById("error-message-reg");
+const popup = document.getElementById("popup");
 tabLogin.addEventListener("click", () => {
   tabLogin.classList.add("active");
   loginForm.classList.add("active");
@@ -18,32 +20,35 @@ tabRegister.addEventListener("click", () => {
 });
 
 // Check if users exist in localStorage if not set it into array and then push user admin
-console.log(JSON.parse(localStorage.getItem("users")));
+// console.log(JSON.parse(localStorage.getItem("users")));
 let users = localStorage.getItem("users");
 if (users) {
   users = JSON.parse(users);
 } else {
   users = [];
 }
-if (users.length === 0) {
-  console.log("users array empty");
+
+// check if admin already exists
+const adminExists = users.some((user) => user.email === "admin@quiz.com");
+if (!adminExists) {
+  // console.log("users array empty");
   users.push({ email: "admin@quiz.com", password: "admin123" });
   localStorage.setItem("users", JSON.stringify(users));
-  console.log("admin user inserted");
+  // console.log("admin user inserted");
 }
 
 // LOGIN
 function handleLogin(e) {
   e.preventDefault();
-  console.log("submit");
+  // console.log("submit");
   const email = document.getElementById("login-email").value.trim();
   const password = document.getElementById("login-password").value.trim();
 
-  console.log("logging in with:", email, password);
+  // console.log("logging in with:", email, password);
 
   const users = JSON.parse(localStorage.getItem("users"));
 
-  console.log("users in localStorage:", users);
+  // console.log("users in localStorage:", users);
 
   let user;
   for (const u of users) {
@@ -53,20 +58,21 @@ function handleLogin(e) {
     }
   }
 
-  console.log("user", user);
+  // console.log("user", user);
   if (user) {
-    console.log("user authenticated:", user);
+    // console.log("user authenticated:", user);
     if (email === "admin@quiz.com" && password === "admin123") {
-      console.log("go to dashboard");
+      // console.log("go to dashboard");
       location.href = "pages/dashboard.html";
     } else {
-      console.log("go to home");
+      // console.log("go to home");
       location.href = "pages/home.html";
     }
     // storing logged-in user in sessionStorage
     sessionStorage.setItem("loggedInUser", JSON.stringify(user));
   } else {
-    alert("invalid credentials");
+    // alert("invalid credentials");
+    errorMessageLog.innerText = "invalid credentials";
   }
 }
 loginForm.addEventListener("submit", handleLogin);
@@ -79,9 +85,10 @@ function handleRegister(e) {
   const email = document.getElementById("register-email").value.trim();
   const password = document.getElementById("register-password").value.trim();
 
-  const users = JSON.parse(localStorage.getItem("users"));
+  const users = JSON.parse(localStorage.getItem("users")) || [];
 
   // check if user already exists
+
   let userExists = false;
   for (const user of users) {
     // using email as a unique identifier
@@ -91,14 +98,20 @@ function handleRegister(e) {
     }
   }
   if (userExists) {
-    alert("User already exists");
+    // alert("User already exists");
+    errorMessageReg.innerText = "user already exists with this email";
     return;
   }
 
   users.push({ name, lastName, email, password, scores: [] });
   localStorage.setItem("users", JSON.stringify(users));
 
-  alert("Registered!");
+  // alert("Registered!");
+  errorMessageLog.innerText = "";
+  popup.classList.remove("hidden");
+  setTimeout(() => {
+    popup.classList.add("hidden"); // Hide after 4 seconds
+  }, 4000);
   // call function showForm to switch tab to login after registered
   showForm("login");
 }

@@ -3,7 +3,33 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles/reset.css" />
+    <link rel="stylesheet" href="../styles/layout.css" />
+    <link rel="stylesheet" href="../styles/heading.css" />
+    <link rel="stylesheet" href="../styles/dashboard.css" />
+    <link rel="stylesheet" href="../styles/logout.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script type="module" src="../scripts/logout.js" defer></script>
+    <script type="module" src="../scripts/dashboard.js" defer></script>
     <title>Dashboard</title>
   </head>
-  <body></body>
+  <div class="page-wrapper">
+    <body>
+      <header>
+        <!-- <nav>navbar</nav> -->
+        <button id="logoutBtn" class="logout">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </header>
+      <main>
+        <h1 class="home-page-header">Welcome, <span id="user-name"></span></h1>
+        <section>
+          <div class="dashboard-container" id="dashboard-container"></div>
+        </section>
+      </main>
+    </body>
+  </div>
 </html>

@@ -1,47 +1,124 @@
-// welcome message with user name and lastName
+import { quizzesInLocalStorage } from "./quizData.js";
+
+quizzesInLocalStorage();
+
+// get quizzes and user info
+const quizzes = JSON.parse(localStorage.getItem("quizzes"));
 const user = JSON.parse(sessionStorage.getItem("loggedInUser"));
+const users = JSON.parse(localStorage.getItem("users"));
+const userIndex = users.findIndex((u) => u.email === user.email);
+const currentUser = users[userIndex];
+
+// get user name
 const userName = document.getElementById("user-name");
-userName.innerHTML = `${user.name} ${user.lastName}`;
-console.log(user);
+userName.innerHTML = `${user.name}`;
 
-// display question
-const questionContainer = document.getElementById("questions-container");
-console.log(questionContainer);
+// get quiz from URL
+const urlParams = new URLSearchParams(window.location.search);
+const quizId = parseInt(urlParams.get("quizId"));
+const selectedQuiz = quizzes.find((quiz) => quiz.id === quizId);
 
-console.log(quizzes);
-const quizCardsHTML = quizzes
-  .map(
-    (quiz) => `
-    <li>
-      <a href="quiz.html?quizId=${quiz.id}">
-        <article class="quiz-card">
-            <div>
-                <img src="${quiz.image}" alt="${quiz.title}" style="width: 100%; height: auto; border-radius: 8px;">
-                <h2>${quiz.title}</h2>
-                <p>${quiz.description}</p>
-            </div>
-        </article>
-      </a>
-    </li>
-  `
-  )
-  .join("");
-questionContainer.innerHTML = quizCardsHTML;
+// check if quiz already taken
+const takenQuiz =
+  currentUser?.scores?.find((s) => s.quizId === selectedQuiz?.id) || null;
 
-// console.log(quizzes);
-// quizzes.forEach((quiz) => {
-//   let questionsItems = quiz.questions
-//     .map((q, index) => {
-//       let optionsHTML = q.options
-//         .map((op, i) => {
-//           return `<label><input type="radio" name="q${index}" value="${op}">${op}</label><br>`;
-//         })
-//         .join("");
-//       return `<div class="question-block">
-//         <h4>${q.text}</h4>
-//         ${optionsHTML}
-//       </div>`;
-//     })
-//     .join("");
-//   questionContainer.innerHTML += `<h3>#${quiz.title}</h3>${questionsItems}`;
-// });
+const questionContainer = document.getElementById("quiz-container");
+
+if (selectedQuiz) {
+  let questionsHTML = selectedQuiz.questions
+    .map((q, index) => {
+      let optionsHTML = q.options
+        .map((op) => {
+          const isChecked = takenQuiz?.answers?.[index] === op ? "checked" : "";
+          return `<label><input type="radio" name="q${index}" value="${op}" ${isChecked}> ${op}</label><br>`;
+        })
+        .join("");
+
+      return `<div class="question-block">
+        <h4>${q.text}</h4>
+        ${optionsHTML}
+      </div>`;
+    })
+    .join("");
+
+  questionContainer.innerHTML = `
+    <h2>${selectedQuiz.title}</h2>
+    ${questionsHTML}
+    <button id="submitBtn" class="submit-button">Submit</button>
+    <div id="result" class="result hidden"></div>
+  `;
+
+  const submitBtn = document.getElementById("submitBtn");
+
+  // if quiz already taken disable inputs and show result
+  if (takenQuiz) {
+    selectedQuiz.questions.forEach((_, index) => {
+      const inputs = document.querySelectorAll(`input[name="q${index}"]`);
+      inputs.forEach((input) => (input.disabled = true));
+    });
+
+    submitBtn.disabled = true;
+
+    const resultBox = document.getElementById("result");
+    resultBox.classList.remove("hidden");
+    resultBox.innerHTML = `
+      <h3>Your Score: <strong>${takenQuiz.score} / ${selectedQuiz.questions.length}</strong></h3>
+    `;
+  }
+
+  if (!takenQuiz) {
+    submitBtn.addEventListener("click", handleSubmit);
+  }
+} else {
+  questionContainer.innerHTML = `<p>Quiz not found.</p>`;
+}
+
+function handleSubmit() {
+  const resultBox = document.getElementById("result");
+  const submitBtn = document.getElementById("submitBtn");
+  resultBox.classList.remove("hidden");
+
+  let score = 0;
+  const selectedAnswers = [];
+
+  selectedQuiz.questions.forEach((q, index) => {
+    const selected = document.querySelector(`input[name="q${index}"]:checked`);
+    const inputs = document.querySelectorAll(`input[name="q${index}"]`);
+
+    inputs.forEach((input) => {
+      input.disabled = true;
+    });
+
+    selectedAnswers.push(selected ? selected.value : null);
+
+    if (selected && selected.value === q.correctAnswer) {
+      score += 1;
+    }
+  });
+
+  resultBox.innerHTML = `<h3>Your Score: ${score} / ${selectedQuiz.questions.length}</h3>`;
+  submitBtn.disabled = true;
+
+  // save to user scores
+  if (!currentUser.scores) {
+    currentUser.scores = [];
+  }
+
+  currentUser.scores.push({
+    quizId: selectedQuiz.id,
+    title: selectedQuiz.title,
+    score: score,
+    answers: selectedAnswers,
+    numberOfQuestions: selectedQuiz.questions.length,
+  });
+
+  users[userIndex] = currentUser;
+  localStorage.setItem("users", JSON.stringify(users));
+  sessionStorage.setItem("loggedInUser", JSON.stringify(currentUser));
+}
+
+const backBtn = document.getElementById("backBtn");
+backBtn.addEventListener("click", () => {
+  // Navigate back to the home/quizzes page
+  window.location.href = "home.html";
+});

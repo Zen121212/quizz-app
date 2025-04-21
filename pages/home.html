@@ -7,14 +7,22 @@
     <link rel="stylesheet" href="../styles/layout.css" />
     <link rel="stylesheet" href="../styles/heading.css" />
     <link rel="stylesheet" href="../styles/home.css" />
-    <script src="../scripts/quizData.js" defer></script>
-    <script src="../scripts/quiz.js" defer></script>
+    <link rel="stylesheet" href="../styles/logout.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script type="module" src="../scripts/logout.js" defer></script>
+    <script type="module" src="../scripts/home.js" defer></script>
     <title>Home</title>
   </head>
   <div class="page-wrapper">
     <body>
       <header>
-        <nav>navbar</nav>
+        <!-- <nav>navbar</nav> -->
+        <button id="logoutBtn" class="logout">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
       </header>
       <main>
         <h1 class="home-page-header">Welcome, <span id="user-name"></span></h1>
@@ -23,8 +31,5 @@
         </section>
       </main>
     </body>
-    <footer>
-      <p>footer</p>
-    </footer>
   </div>
 </html>

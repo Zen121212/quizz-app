@@ -1,3 +1,10 @@
+/* font */
+
+@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap");
+body {
+  font-family: "Jost", sans-serif;
+  background-color: #d0d0d052;
+}
 header {
   padding: 24px;
 }
@@ -15,14 +22,8 @@ main {
   padding: 2rem;
 }
 
-header,
-footer {
+header {
   background-color: #222;
   color: white;
   padding: 1rem 2rem;
-}
-
-footer {
-  text-align: center;
-  font-size: 0.9rem;
 }

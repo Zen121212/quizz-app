@@ -1,7 +1,7 @@
 .home-page-header {
   margin-bottom: 24px;
 }
-/* Container */
+
 .questions-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -9,8 +9,8 @@
   list-style: none;
 }
 
-/* card */
 .questions-container li a {
+  position: relative;
   text-decoration: none;
   color: inherit;
   display: block;
@@ -52,4 +52,29 @@
 .quiz-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 20px #00000026;
+}
+
+.quiz-card .status {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 12px;
+}
+
+.quiz-card .status.completed {
+  color: green;
+}
+.quiz-card .status.in-progress {
+  color: orange;
+}
+.quiz-card .status::before {
+  content: "";
+  position: absolute;
+  left: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: currentColor;
 }

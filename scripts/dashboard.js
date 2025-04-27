@@ -5,7 +5,6 @@ if (loggedInUserString) {
   try {
     loggedInUser = JSON.parse(loggedInUserString);
   } catch (e) {
-    console.error("Error parsing loggedInUser from localStorage:", e);
     loggedInUser = null;
   }
 }

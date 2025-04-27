@@ -2,7 +2,7 @@ const quizzes = [
   {
     id: 1,
     title: "JavaScript & DOM Manipulation",
-    image: "../assets/images/card-images/js.png", // Replace with actual image path
+    image: "../assets/images/card-images/js.png",
     description:
       "Test your knowledge on JavaScript fundamentals and how to manipulate the DOM.",
     questions: [
@@ -100,7 +100,6 @@ const quizzes = [
   },
 ];
 
-// Call this only when needed
 export function quizzesInLocalStorage() {
   if (!localStorage.getItem("quizzes")) {
     localStorage.setItem("quizzes", JSON.stringify(quizzes));

@@ -4,7 +4,7 @@ quizzesInLocalStorage();
 
 // get quizzes and user info
 const quizzes = JSON.parse(localStorage.getItem("quizzes"));
-const user = JSON.parse(sessionStorage.getItem("loggedInUser"));
+const user = JSON.parse(localStorage.getItem("loggedInUser"));
 const users = JSON.parse(localStorage.getItem("users"));
 const userIndex = users.findIndex((u) => u.email === user.email);
 const currentUser = users[userIndex];
@@ -66,7 +66,7 @@ if (selectedQuiz) {
     `;
   }
 
-  if (!takenQuiz) {
+  if (!takenQuiz || !takenQuiz.isSubmit) {
     submitBtn.addEventListener("click", handleSubmit);
   }
 } else {
@@ -79,7 +79,6 @@ function handleSubmit() {
   resultBox.classList.remove("hidden");
 
   let score = 0;
-  const selectedAnswers = [];
 
   selectedQuiz.questions.forEach((q, index) => {
     const selected = document.querySelector(`input[name="q${index}"]:checked`);
@@ -88,8 +87,6 @@ function handleSubmit() {
     inputs.forEach((input) => {
       input.disabled = true;
     });
-
-    selectedAnswers.push(selected ? selected.value : null);
 
     if (selected && selected.value === q.correctAnswer) {
       score += 1;
@@ -108,17 +105,15 @@ function handleSubmit() {
     quizId: selectedQuiz.id,
     title: selectedQuiz.title,
     score: score,
-    answers: selectedAnswers,
     numberOfQuestions: selectedQuiz.questions.length,
+    isSubmit: true,
   });
 
   users[userIndex] = currentUser;
   localStorage.setItem("users", JSON.stringify(users));
-  sessionStorage.setItem("loggedInUser", JSON.stringify(currentUser));
 }
 
 const backBtn = document.getElementById("backBtn");
 backBtn.addEventListener("click", () => {
-  // Navigate back to the home/quizzes page
   window.location.href = "home.html";
 });

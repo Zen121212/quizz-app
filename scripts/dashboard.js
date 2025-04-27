@@ -1,7 +1,25 @@
+const loggedInUserString = localStorage.getItem("loggedInUser");
+let loggedInUser = null;
+
+if (loggedInUserString) {
+  try {
+    loggedInUser = JSON.parse(loggedInUserString);
+  } catch (e) {
+    console.error("Error parsing loggedInUser from localStorage:", e);
+    loggedInUser = null;
+  }
+}
+
+const isAdmin = loggedInUser && loggedInUser.is_admin === 1;
+
+if (!isAdmin) {
+  window.location.href = "/index.html";
+}
+
 const users = JSON.parse(localStorage.getItem("users")) || [];
 const dashboardContainer = document.getElementById("dashboard-container");
 
-const user = JSON.parse(sessionStorage.getItem("loggedInUser"));
+const user = JSON.parse(localStorage.getItem("loggedInUser"));
 const userName = document.getElementById("user-name");
 userName.innerHTML = `Admin`;
 
